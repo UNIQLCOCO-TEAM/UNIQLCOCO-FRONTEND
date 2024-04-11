@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "../../../components/navbar";
-import ProductList from "../../../components/popularProduct";
-
+import Navbar from "../../components/navbar";
+import ProductList from "../../components/popularProduct";
+import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
         <Navbar />
       </div>
       <div className="relative">
-        <img src="/Home.png" className="w-full h-auto" alt="Background Image" />
+        <img src="/Home.png" className="h-auto w-full" alt="Background Image"/>
 
         <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg md:text-2xl lg:text-4xl xl:text-5xl font-bold text-white mt-7 md:mt-9 lg:mt-24 xl:mt-32">
           WELCOME TO
