@@ -61,19 +61,15 @@ const Navbar = () => {
           </div>
           <div className="flex items-center justify-center sm:items-stretch sm:justify-start flex-grow">
             <div className="flex flex-shrink-0 items-center">
-              <Image
+              <img
                 className="h-12 w-auto"
                 src="/LOGO2.png"
                 alt="Your Company"
-                sizes="auto"
-                fill
               />
-              <Image
+              <img
                 className="h-12 w-auto ml-3"
                 src="/LOGO1.png"
                 alt="Your Company"
-                sizes="auto"
-                fill
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
@@ -107,7 +103,7 @@ const Navbar = () => {
             >
               <span className="absolute -inset-1.5"></span>
               <span className="sr-only">View notifications</span>
-              <Image className="h-7" src="/cart.png" alt="view-notify" sizes="auto" fill />
+              <img className="h-7" src="/cart.png" alt="view-notify"/>
             </button>
             <div className="relative ml-3">
               <div>
@@ -120,7 +116,7 @@ const Navbar = () => {
                 >
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">Open user menu</span>
-                  <Image className="h-7" src="/user.png" alt="user-menu" sizes="auto" fill />
+                  <img className="h-7" src="/user.png" alt="user-menu"/>
                 </button>
               </div>
             </div>
