@@ -21,10 +21,11 @@ module.exports = {
         'grey1':'#939393'
       },
       fontSize: {
-        sm: ['9px', '12px'],
-        base: ['16px', '24px'],
-        lg: ['14px', '18px'],
-        xl: ['22px', '28px'],
+        sm: ['8px', '12px'],
+        base: ['12px', '14px'],
+        lg: ['14px', '16px'],
+        l:['16px', '18px'],
+        xl: ['22px', '30px'],
         xxl: ['30px', '38px'],
         xxxl: ['48px', '56px'],
       }
