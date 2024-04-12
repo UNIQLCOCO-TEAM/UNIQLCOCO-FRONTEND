@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from 'next/image'
 
 const Navbar = () => {
-
+  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -75,20 +75,19 @@ const Navbar = () => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex mr-0">
                 <a
-                  href="#"
-                  className="m-2 text-green1 rounded-md px-3 py-2 font-bold text-xl "
-                  aria-current="page"
+                  href="/home"
+                  className="m-2 text-black rounded-md px-3 py-2 font-bold text-xl" 
                 >
                   HOME
                 </a>
                 <a
-                  href="#"
+                  href="/shirts"
                   className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
                 >
                   SHIRTS
                 </a>
                 <a
-                  href="#"
+                  href="/pants"
                   className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
                 >
                   PANTS
@@ -132,20 +131,20 @@ const Navbar = () => {
       >
         <div className="space-y-1 px-2 pb-3 pt-2 w-full">
           <a
-            href="#"
+            href="/home"
             className="block w-full text-greenapp rounded-md px-3 py-2 font-bold text-xl"
             aria-current="page"
           >
             HOME
           </a>
           <a
-            href="#"
+            href="/shirts"
             className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
           >
             SHIRTS
           </a>
           <a
-            href="#"
+            href="/pants"
             className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
           >
             PANTS
