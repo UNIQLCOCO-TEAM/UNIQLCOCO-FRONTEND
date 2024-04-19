@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from 'next/image'
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -63,12 +64,12 @@ const Navbar = () => {
                 className="h-12 w-auto"
                 src="/LOGO2.png"
                 alt="Your Company"
-              ></img>
+              />
               <img
                 className="h-12 w-auto ml-3"
                 src="/LOGO1.png"
                 alt="Your Company"
-              ></img>
+              />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex mr-0">
@@ -98,11 +99,13 @@ const Navbar = () => {
               type="button"
               className="relative rounded-full bg-white-800 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-greenapp"
             >
+
               <a href="/carts">
                 <span className="absolute -inset-1.5"></span>
                 <span className="sr-only">View notifications</span>
                 <img className="h-7" src="/cart.png"></img>
               </a>
+
             </button>
             <div className="relative ml-3">
               <div>
@@ -115,7 +118,7 @@ const Navbar = () => {
                 >
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">Open user menu</span>
-                  <img className="h-7" src="/user.png"></img>
+                  <img className="h-7" src="/user.png" alt="user-menu"/>
                 </button>
               </div>
             </div>
