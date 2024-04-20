@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image from 'next/image'
 
 const Navbar = () => {
-  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -76,7 +75,7 @@ const Navbar = () => {
               <div className="flex mr-0">
                 <a
                   href="/home"
-                  className="m-2 text-black rounded-md px-3 py-2 font-bold text-xl" 
+                  className="m-2 text-black rounded-md px-3 py-2 font-bold text-xl"
                 >
                   HOME
                 </a>
@@ -100,9 +99,13 @@ const Navbar = () => {
               type="button"
               className="relative rounded-full bg-white-800 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-greenapp"
             >
-              <span className="absolute -inset-1.5"></span>
-              <span className="sr-only">View notifications</span>
-              <img className="h-7" src="/cart.png" alt="view-notify"/>
+
+              <a href="/carts">
+                <span className="absolute -inset-1.5"></span>
+                <span className="sr-only">View notifications</span>
+                <img className="h-7" src="/cart.png"></img>
+              </a>
+
             </button>
             <div className="relative ml-3">
               <div>
