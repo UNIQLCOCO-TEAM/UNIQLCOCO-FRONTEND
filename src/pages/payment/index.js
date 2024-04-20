@@ -49,7 +49,7 @@ export default function Payment() {
           </div>
           <div class="flex items-center justify-between w-full">
             <p class="font-sukhumvit font-semibold text-l md:text-l lg:text-xl xl:text-xl leading-9 text-gray-900 mt-2 md:mt-2 lg:mt-3 xl:mt-4">
-              นายวิศวะ ซอฟต์แวร์
+              วิศวะ ซอฟต์แวร์
             </p>
           </div>
 

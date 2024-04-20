@@ -116,9 +116,11 @@ const Navbar = () => {
                   aria-expanded="false"
                   aria-haspopup="true"
                 >
+                  <a href="/profile">
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">Open user menu</span>
                   <img className="h-7" src="/user.png" alt="user-menu"/>
+                  </a>
                 </button>
               </div>
             </div>
