@@ -23,14 +23,14 @@ export default function Carts() {
 
   const removeFromCart = (productId) => {
     console.log("Removing product with ID:", productId);
-    // ใส่โค้ดเพื่อลบสินค้าออกจากตะกร้าตาม ID ที่รับมา
+
   };
 
   return (
-    <div className="font-sukhumvit bg-white h-screen">
+    <div className="font-sukhumvit bg-white h-full">
       <Navbar />
       <div className="bg-white">
-        <div className="text-greenapp px-10 md:px-10 lg:px-15 xl:px-48 py-5 md:py-5 lg:py-10 xl:py-15 font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
+        <div className="text-greenapp px-10 md:px-10 lg:px-15 xl:px-32 py-5 md:py-5 lg:py-10 xl:py-15 font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
           YOUR
           <span className="ml-3 text-black font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
             CARTS
@@ -39,7 +39,7 @@ export default function Carts() {
       </div>
 
       <div className="h-screen bg-white font-sukhumvit">
-        <div className="py-2 relative">
+        <div className="relative bg-white">
           <div className="w-full bg-white  max-w-7xl px-4 md:px-5 lg-6 mx-auto">
             {products.map((product) => (
               <div
@@ -100,25 +100,44 @@ export default function Carts() {
                 </div>
               </div>
             ))}
-            
-            <div class="rounded-xl p-6 max-lg:max-w-xl max-lg:mx-auto font-sukhumvit w-full bg-white">
-                <div class="flex items-center justify-between w-full mb-6">
-                    <p class="font-normal text-xl leading-8 text-gray-400">Sub Total</p>
-                    <h6 class="font-semibold text-xl leading-8 text-gray-900">$360.00</h6>
-                </div>
-                <div class="flex items-center justify-between w-full pb-6 border-b border-gray-200">
-                    <p class="font-normal text-xl leading-8 text-gray-400">Delivery Charge</p>
-                    <h6 class="font-semibold text-xl leading-8 text-gray-900">$45.00</h6>
-                </div>
-                <div class="flex items-center justify-between w-full py-3">
-                    <p class="font-manrope font-medium text-2xl leading-9 text-gray-900">Total</p>
-                    <h6 class="font-manrope font-medium text-2xl leading-9 text-indigo-500">$405.00</h6>
-                </div>
+
+            <div class="rounded-xl p-6 max-lg:max-w-xl max-lg:mx-auto font-sukhumvit w-full bg-lightgrey">
+              <div class="flex items-center justify-between w-full mb-6">
+                <p class="font-normal text-xl leading-8 text-gray-400">รวม</p>
+                <h6 class="font-semibold text-xl leading-8 text-gray-900">
+                  400 บาท
+                </h6>
+              </div>
+              <div class="flex items-center justify-between w-full pb-6 border-b-2 border-greenapp ">
+                <p class="font-normal text-xl leading-8 text-gray-400">
+                  การจัดส่งสินค้า
+                </p>
+                <h6 class="font-semibold text-xl leading-8 text-gray-900">
+                  0 บาท
+                </h6>
+              </div>
+              <div class="flex items-center justify-between w-full py-3">
+                <p class="font-manrope font-semibold text-2xl leading-9 text-gray-900">
+                  ราคารวม
+                </p>
+                <h6 class="font-manrope font-semibold text-2xl leading-9 text-greenapp">
+                  400 บาท
+                </h6>
+              </div>
             </div>
           </div>
-       
-
-          
+          <div class="bg-white flex items-center flex-col sm:flex-row justify-center gap-3  py-10">
+            <a href="/home" class="rounded-full py-4 w-full max-w-[280px]  flex items-center bg-indigo-50 justify-center transition-all duration-500  hover:bg-grey1">
+                
+                <span class="px-2 font-semibold text-xl leading-8 text-black">
+                  Back to Shopping
+                </span>
+              
+            </a>
+            <a href="/payment" class="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-greenapp font-semibold text-xl text-white flex transition-all duration-500 hover:bg-green1">
+              ชำระเงิน
+            </a>
+          </div>
         </div>
       </div>
     </div>

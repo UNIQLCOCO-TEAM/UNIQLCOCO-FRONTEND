@@ -18,8 +18,9 @@ module.exports = {
       colors: {
         'greenapp': '#9CB97B',
         'green1':'#8FA477',
-        'greenbg':'#E6EDDE',
-        'grey1':'#939393'
+        'greenbg':'#F8FBF4',
+        'grey1':'#939393',
+        'lightgrey': '#F7F5F5'
 
       },
       fontSize: {
