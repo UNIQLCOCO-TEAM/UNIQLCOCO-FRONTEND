@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="h-screen ">
       <div>
-        <Navbar />
+        <Navbar path={"home"} />
       </div>
       <div className="">
         <div className="relative">

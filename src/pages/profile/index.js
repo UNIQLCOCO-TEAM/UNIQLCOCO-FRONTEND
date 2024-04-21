@@ -1,15 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar";
 
 export default function Profile() {
-  // Dummy user data
-  const userData = {
-    firstName: "วิศวะ",
-    lastName: "ซอฟต์แวร์",
-    address: "99 ถ. พหลโยธิน ตำบล คลองหนึ่ง อำเภอคลองหลวง ปทุมธานี 12120",
-    phoneNumber: "012-345-6789",
-  };
-
   // Dummy order data
   const orders = [
     {
@@ -22,8 +14,48 @@ export default function Profile() {
       date: "21/04/2024",
       price: 600,
     },
-    
   ];
+
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    surname: "",
+    address: "",
+    phone_number: "",
+  });
+
+  const uid = 1;
+  const access_token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+
+  const handleUserProfile = async (id, access_token) => {
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const result = await handleUserProfile(uid, access_token);
+      const fetchUserData = JSON.parse(result).result;
+      setUserProfile(fetchUserData);
+    };
+    fetchUserProfile();
+  }, [access_token, uid]);
 
   return (
     <div className="font-sukhumvit bg-white h-screen">
@@ -34,7 +66,6 @@ export default function Profile() {
         </div>
       </div>
 
-
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto my-2 flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
           <img src="/profile.png" className="w-32" alt="Profile"></img>
@@ -42,17 +73,17 @@ export default function Profile() {
         <div className="max-w-xl mx-auto p-5 text-center">
           <div className="mb-4">
             <h3 className="text-xxl font-semibold text-greenapp">
-              {userData.firstName} {userData.lastName}
+              {userProfile.name} {userProfile.surname}
             </h3>
           </div>
           <div className="mb-4">
             <h3 className="text-l font-semibold text-gray-800">
-              ที่อยู่: {userData.address}
+              ที่อยู่: {userProfile.address}
             </h3>
           </div>
           <div>
             <h3 className="text-l font-semibold text-gray-800 mb-12">
-              เบอร์ติดต่อ: {userData.phoneNumber}
+              เบอร์ติดต่อ: {userProfile.phone_number}
             </h3>
           </div>
         </div>

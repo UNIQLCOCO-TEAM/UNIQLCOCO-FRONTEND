@@ -7,7 +7,7 @@ export default function Shirts() {
 
       <div className="h-screen">
         <div>
-          <Navbar />
+          <Navbar path={"shirt"} />
         </div>
 
         <div className="relative">

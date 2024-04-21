@@ -1,59 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-const products = [
-  {
-    id: 1,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-  {
-    id: 2,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-  {
-    id: 3,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-  {
-    id: 4,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-  {
-    id: 5,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-  {
-    id: 6,
-    name: "กางเกงขายาวชิโน่ผู้ชาย",
-    price: 990,
-    color: "สีดำ",
-    image: "/pant.jpeg",
-  },
-];
-
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    console.log(src);
-    return `http://172.25.10.143:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
   return (
     <button>
-      <a href="/productDetail">
+      <a href={`/pants/productDetail/${product.id}`}>
         <div className="border rounded p-1 m-1 font-sukhumvit flex flex-col">
           <Image
             loader={imageLoader}
@@ -86,10 +40,10 @@ const PantsList = () => {
   const [pantProducts, setPantProducts] = useState({});
 
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM1MjAwODksImV4cCI6MTcxMzUzMDg4OX0.G-yDkc2C_TEN6S507F7CiMHsftlEuSrdxdsDHzXkstY";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
 
   const handlePantProducts = async (id, access_token) => {
-    const API_URL = `http://172.25.10.143:8081/product/type/${id}`;
+    const API_URL = `http://192.168.1.5:8081/product/type/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -122,10 +76,8 @@ const PantsList = () => {
           Array.from(productsList).map((product, _index) => {
             newProductsList.push({
               ...product,
-              id: _index + 1,
             });
           });
-          console.log(newProductsList);
           setPantProducts(newProductsList);
         });
       } catch (err) {

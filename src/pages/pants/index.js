@@ -5,7 +5,7 @@ export default function Pants() {
   return (
     <div>
       <div className="w-screen">
-        <Navbar />
+        <Navbar path={"pant"} />
       </div>
       <div className="relative">
         <img className="w-full h-auto" src="/shirt-topic.png"></img>
