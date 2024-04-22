@@ -43,15 +43,15 @@ export default function Payment() {
   ];
 
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.87:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   const id = 1;
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3ODk5ODcsImV4cCI6MTcxMzgwMDc4N30.vYoqgcHtZMxe_Y98jKOWhf7LWcZ7Fs0eTT9TXy4Uofc";
 
   const handleUserHasCart = async (id, access_token) => {
-    const API_URL = `http://10.4.13.87:8081/cart/uid/${id}`;
+    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -72,7 +72,7 @@ export default function Payment() {
   };
 
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -93,7 +93,7 @@ export default function Payment() {
   };
 
   const submitPayment = async (id, access_token) => {
-    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -113,8 +113,11 @@ export default function Payment() {
     }
   };
 
-  const handleSubmitPayment = async () => {
-    console.log(cartID);
+  const convertPhoneNumberFormat = (phone) => {
+    const firstDigit = `${phone}`.slice(0, 3);
+    const twoDigit = `${phone}`.slice(3, 6);
+    const threeDigit = `${phone}`.slice(6);
+    return `${firstDigit}-${twoDigit}-${threeDigit}`;
   }
 
   useEffect(() => {
@@ -169,7 +172,7 @@ export default function Payment() {
 
           <div class="flex items-center justify-between w-full">
             <p class="font-sukhumvit font-semibold text-lg md:text-lg lg:text-l xl:text-l leading-9 text-gray-900 mt-1 md:mt-2 lg:mt-3 xl:mt-4">
-              เบอร์ติดต่อ : {userProfile.phone_number}
+              เบอร์ติดต่อ : {convertPhoneNumberFormat(userProfile.phone_number)}
             </p>
           </div>
         </div>
