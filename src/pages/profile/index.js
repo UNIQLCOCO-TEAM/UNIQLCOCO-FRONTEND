@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar";
+import Footer from "../../../components/footer";
 
 export default function Profile() {
   // Dummy order data
@@ -25,10 +26,10 @@ export default function Profile() {
 
   const uid = 1;
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
 
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -112,11 +113,11 @@ export default function Profile() {
             {orders.map((order) => (
               <tr
                 key={order.id}
-                className="bg-white dark:bg-gray-800 text-l md:text-l lg:text-xl xl:text-xl"
+                className="bg-white  text-l md:text-l lg:text-xl xl:text-xl"
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
                 >
                   {order.id}
                 </th>
@@ -126,6 +127,9 @@ export default function Profile() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="bottom-0 w-full mt-2">
+        <Footer />
       </div>
     </div>
   );

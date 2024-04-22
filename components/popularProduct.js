@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.87:8081${src}`;
   };
 
   const productType = product.type == 1 ? "shirts" : "pants";
@@ -33,6 +33,11 @@ const ProductCard = ({ product }) => {
               {product.color}
             </p>
           </div>
+          <div className="flex justify-between items-start mb-5">
+            <p className="text-grey1 font-semibold ml-1 text-sm md:text-sm lg:text-base xl:text-lg">
+              ขนาด {product.size}
+            </p>
+          </div>
         </div>
       </a>
     </button>
@@ -43,10 +48,10 @@ const ProductList = () => {
   const [productList, setProductList] = useState([]);
 
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
 
   const handleProductList = async (access_token) => {
-    const API_URL = `http://192.168.1.5:8082/order/popular`;
+    const API_URL = `http://10.4.13.87:8082/order/popular`;
     try {
       const result = await fetch(API_URL, {
         method: "POST",

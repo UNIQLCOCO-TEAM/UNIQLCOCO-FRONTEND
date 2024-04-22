@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.87:8081${src}`;
   };
   return (
     <button>
@@ -40,10 +40,10 @@ const PantsList = () => {
   const [pantProducts, setPantProducts] = useState({});
 
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
 
   const handlePantProducts = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/product/type/${id}`;
+    const API_URL = `http://10.4.13.87:8081/product/type/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",

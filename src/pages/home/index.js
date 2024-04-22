@@ -3,8 +3,13 @@ import Navbar from "../../../components/navbar";
 import ProductList from "../../../components/popularProduct";
 import Image from "next/image";
 import Footer from "../../../components/footer";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+  const redirect = () => {
+    router.replace("/shirts");
+  };
   return (
     <div className="h-screen ">
       <div>
@@ -28,7 +33,10 @@ export default function Home() {
             alt="logo01"
           />
 
-          <button className="absolute z-10 top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-4 md:mt-4 lg:mt-6 xl:mt-6 text-base md:text-lg lg:text-lg xl:text-xl font-semibold text-white border border-white rounded-full px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-4 bg-transparent hover:bg-white hover:text-black hover:border-transparent transition duration-300">
+          <button
+            className="absolute z-10 top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-4 md:mt-4 lg:mt-6 xl:mt-6 text-base md:text-lg lg:text-lg xl:text-xl font-semibold text-white border border-white rounded-full px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-4 bg-transparent hover:bg-white hover:text-black hover:border-transparent transition duration-300"
+            onClick={redirect}
+          >
             SHOP NOW
           </button>
         </div>
@@ -42,7 +50,7 @@ export default function Home() {
           <ProductList />
         </div>
       </div>
-      <div className="bottom-0 w-full">
+      <div className="bottom-0 w-full mt-2">
         <Footer />
       </div>
     </div>

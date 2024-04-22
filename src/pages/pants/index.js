@@ -1,5 +1,6 @@
 import Navbar from "../../../components/navbar";
 import PantsList from "../../../components/pantsProducts";
+import Footer from "../../../components/footer";
 
 export default function Pants() {
   return (
@@ -14,6 +15,9 @@ export default function Pants() {
         </div>
         <div className="bg-white px-8 py-12">
           <PantsList />
+        </div>
+        <div className="bottom-0 w-full mt-2">
+          <Footer />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import Navbar from "../../../components/navbar";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Footer from "../../../components/footer";
 
 export default function Carts() {
   const [carts, setCarts] = useState([]);
@@ -26,7 +27,12 @@ export default function Carts() {
     setIsDisable(updateCart.length == 0 ? true : false);
 
     try {
-      const result = await handleUpdateCart(uid, productList, cartID, access_token);
+      const result = await handleUpdateCart(
+        uid,
+        productList,
+        cartID,
+        access_token
+      );
       console.log(JSON.parse(result));
     } catch (err) {
       console.error(err);
@@ -34,15 +40,15 @@ export default function Carts() {
   };
 
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.87:8081${src}`;
   };
 
   const uid = 1;
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
 
   const handleCurrentCart = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
+    const API_URL = `http://10.4.13.87:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -63,7 +69,7 @@ export default function Carts() {
   };
 
   const handleUpdateCart = async (uid, productList, cartID, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/${cartID}`;
+    const API_URL = `http://10.4.13.87:8081/cart/${cartID}`;
     const information = {
       status: 0,
       products_id: productList,
@@ -187,7 +193,9 @@ export default function Carts() {
 
             <div className="rounded-xl p-6 max-lg:max-w-xl max-lg:mx-auto font-sukhumvit w-full bg-lightgrey">
               <div className="flex items-center justify-between w-full mb-6">
-                <p className="font-normal text-xl leading-8 text-gray-400">รวม</p>
+                <p className="font-normal text-xl leading-8 text-gray-400">
+                  รวม
+                </p>
                 <h6 className="font-semibold text-xl leading-8 text-gray-900">
                   {parseInt(totalPrice).toLocaleString()} บาท
                 </h6>
@@ -231,6 +239,9 @@ export default function Carts() {
               ชำระเงิน
             </a>
           </div>
+        </div>
+        <div className="bottom-0 w-full">
+          <Footer />
         </div>
       </div>
     </div>

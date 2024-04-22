@@ -2,13 +2,15 @@ import PaymentModal from "../../../components/paymentModal";
 import Navbar from "../../../components/navbar";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Footer from "../../../components/footer";
 
 export default function Payment() {
+  const uid = 1;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [order, setOrder] = useState([]);
   const [fees, setFees] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [uid, setUid] = useState(0);
+  const [cartID, setCartID] = useState(0);
   const [userProfile, setUserProfile] = useState({
     name: "",
     surname: "",
@@ -41,15 +43,15 @@ export default function Payment() {
   ];
 
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.87:8081${src}`;
   };
 
   const id = 1;
   const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3MDU1MDcsImV4cCI6MTcxMzcxNjMwN30.AeL8xM5-mBzXYdMuSFPDPfCdchp9YUKCRsohKAQC3Nc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
 
-  const handleCurrentOrder = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8082/order/${id}`;
+  const handleUserHasCart = async (id, access_token) => {
+    const API_URL = `http://10.4.13.87:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -70,7 +72,7 @@ export default function Payment() {
   };
 
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -90,16 +92,41 @@ export default function Payment() {
     }
   };
 
+  const submitPayment = async (id, access_token) => {
+    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handleSubmitPayment = async () => {
+    console.log(cartID);
+  }
+
   useEffect(() => {
     const fetchCurrentOrder = async () => {
-      const result = await handleCurrentOrder(id, access_token);
+      const result = await handleUserHasCart(uid, access_token);
       const currentOrderData = JSON.parse(result).result;
-      setUid(currentOrderData.uid);
       console.log(currentOrderData);
       if (currentOrderData != null) {
+        setCartID(currentOrderData.id);
         setFees(currentOrderData.fees);
         setTotalPrice(currentOrderData.total_price);
-        setOrder(currentOrderData.products);
+        setOrder(currentOrderData.carts);
       }
     };
     const fetchUserProfile = async () => {
@@ -113,7 +140,7 @@ export default function Payment() {
 
   return (
     <div className="font-sukhumvit bg-white h-full">
-      {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} cartID={cartID} />}
       <Navbar />
       <div className="bg-white">
         <div className="text-greenapp px-10 md:px-10 lg:px-15 xl:px-32 py-5 md:py-5 lg:py-10 xl:py-15 font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
@@ -167,7 +194,7 @@ export default function Payment() {
             <div className="col-span-12 lg:col-span-10 detail lg:pl-3">
               <div className="flex items-center justify-start mb-2">
                 <h5 className="font-bold text-xl md:text-xl lg:text-xxl xl:text-xxl text-gray-900 mr-auto">
-                {product.title}
+                  {product.title}
                 </h5>
               </div>
               <div className="font-semi-bold text-l leading-7 text-gray-500 mb-6">
@@ -242,6 +269,9 @@ export default function Payment() {
             ชำระเงิน
           </a>
         </div>
+      </div>
+      <div className="bottom-0 w-full mt-2">
+        <Footer />
       </div>
     </div>
   );
