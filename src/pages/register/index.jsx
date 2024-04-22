@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import Navbar from '../../../components/navbar'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaCircleArrowLeft } from "react-icons/fa6";
-
+import { useRouter } from 'next/router' 
+import validatePass from '@/utils/validatePass';
+import validatePhone from '@/utils/validatePhone';
 
 const Register = () => {
+    const router = useRouter()
+    const [confirmPassword, setConfirmPassword] = useState("")
     const [account, setAccount] = useState({
         firstname: "",
         lastname: "",
@@ -24,9 +27,32 @@ const Register = () => {
         console.log(account)
     }
 
-    const onSignUp = async () => {
-
+    /** Functions **/
+    const handleSignUp = async () => {
+        { validatePass(user.password, confirmPassword) && validatePhone(user.phoneNumber) ?
+        /** Template **/
+        // try {
+        //     const UNIQLCOCO_API = ""
+        //     const result = await fetch(UNIQLCOCO_API, {
+        //         method: "POST",
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(),
+        //     })
+        //     if (result.ok) {
+        //         router.push('/login')
+        //     }
+        // } catch(err) {
+        //     console.error(err)
+        // }
+        console.log("user: ", {account, user}, "\n Ok!")
+        : alert("Wrong input format!\n");
+        // console.log(user.password, " != ", confirmPassword)
+        }
     }
+    
+
   return (
     <div className='flex-1 min-h-screen bg-greenbg'>
         <nav className="bg-white font-sukhumvit">
@@ -73,7 +99,7 @@ const Register = () => {
             </div>
             <div className='bg-white px-8 pt-8 pb-5'>
                 { next ?
-                    <form action={onSignUp()} className='grid sm:grid-cols-4 grid-cols-1 gap-6'>
+                    <form className='grid sm:grid-cols-4 grid-cols-1 gap-6'>
                         <div className='flex items-center'>
                             <label htmlFor='email' className='text-[#202020] font-semibold'>Email</label>
                         </div>
@@ -106,8 +132,8 @@ const Register = () => {
                             focus:outline-none focus:border-[#8FA477]'
                             id='confirmPassword' 
                             type='password'
-                            value={user.password}
-                            onChange={(e) => setUser({...user, password: e.target.value})}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder='Confirm password'
                         />
                         <div
@@ -116,7 +142,9 @@ const Register = () => {
                             <button
                                 className='p-2 bg-[#9CB97B] rounded-lg
                                 hover:bg-green-900 font-semibold
-                                text-white' 
+                                text-white'
+                                // type='submit' 
+                                onClick={handleSignUp}
                             >
                                 Create an account
                             </button>
@@ -163,16 +191,18 @@ const Register = () => {
                         <div className='flex items-center'>
                             <label htmlFor='phoneNumber' className='text-[#202020] font-semibold'>Phone number</label>
                         </div>
-                        <input
-                            className='sm:col-span-2 p-1 py-2 border border-[#9CB97B] rounded-lg
-                            focus:outline-none focus:border-[#8FA477]'
-                            id='phoneNumber' 
-                            type='tel'
-                            pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-                            value={account.lastname}
-                            onChange={(e) => setAccount({...account, phoneNumber: e.target.value})}
-                            placeholder='Phone number'
-                        />
+                        <div className='sm:col-span-2'>
+                            <input
+                                className='p-1 py-2 border border-[#9CB97B] rounded-lg
+                                focus:outline-none focus:border-[#8FA477]'
+                                id='phoneNumber' 
+                                type='tel'
+                                value={account.phoneNumber}
+                                onChange={(e) => setAccount({...account, phoneNumber: e.target.value})}
+                                placeholder='Phone number'
+                            />
+                            <span id="phoneError" className='text-red-800'></span>
+                        </div>
                         <div className='sm:col-span-3'/>
                         <div className='sm:col-start-3 sm:col-span-2 mt-8 grid content-center'>
                             <button
