@@ -1,11 +1,12 @@
 import Navbar from "../../../components/navbar";
 import PantsList from "../../../components/pantsProducts";
+import Footer from "../../../components/footer";
 
 export default function Pants() {
   return (
     <div>
       <div className="w-screen">
-        <Navbar />
+        <Navbar path={"pant"} />
       </div>
       <div className="relative">
         <img className="w-full h-auto" src="/shirt-topic.png"></img>
@@ -14,6 +15,9 @@ export default function Pants() {
         </div>
         <div className="bg-white px-8 py-12">
           <PantsList />
+        </div>
+        <div className="bottom-0 w-full mt-2">
+          <Footer />
         </div>
       </div>
     </div>

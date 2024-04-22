@@ -1,13 +1,37 @@
-import React, { useState } from "react";
-import Image from 'next/image'
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({ path }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHome, setIsHome] = useState(false);
+  const [isShirt, setIsShirt] = useState(false);
+  const [isPant, setIsPant] = useState(false);
+  const [isMouseIn, setIsMouseIn] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  useEffect(() => {
+    if (path == "home") {
+      setIsHome(true);
+      setIsShirt(false);
+      setIsPant(false);
+    } else if (path == "shirt") {
+      setIsHome(false);
+      setIsShirt(true);
+      setIsPant(false);
+    } else if (path == "pant") {
+      setIsHome(false);
+      setIsShirt(false);
+      setIsPant(true);
+    } else {
+      setIsHome(false);
+      setIsShirt(false);
+      setIsPant(false);
+    }
+  }, [isHome, isShirt, isPant, path]);
 
   return (
     <nav className="bg-white font-sukhumvit">
@@ -75,20 +99,59 @@ const Navbar = () => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex mr-0">
                 <Link
+                  style={
+                    isHome == true && isMouseIn == false
+                      ? { color: "#9CB97B", fontWeight: 700 }
+                      : isHome == true && isMouseIn == true
+                      ? {
+                          color: "#9CB97B",
+                          fontWeight: 700,
+                          backgroundColor: "white",
+                        }
+                      : {}
+                  }
+                  onMouseEnter={() => setIsMouseIn(true)}
+                  onMouseLeave={() => setIsMouseIn(false)}
                   href="/home"
-                  className="m-2 text-black rounded-md px-3 py-2 font-bold text-xl"
+                  className="m-2 text-black hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-normal text-xl"
                 >
                   HOME
                 </Link>
                 <Link
+                  style={
+                    isShirt == true && isMouseIn == false
+                      ? { color: "#9CB97B", fontWeight: 700 }
+                      : isShirt == true && isMouseIn == true
+                      ? {
+                          color: "#9CB97B",
+                          fontWeight: 700,
+                          backgroundColor: "white",
+                        }
+                      : {}
+                  }
+                  onMouseEnter={() => setIsMouseIn(true)}
+                  onMouseLeave={() => setIsMouseIn(false)}
                   href="/shirts"
-                  className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
+                  className="m-2 text-black hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-normal text-xl"
                 >
                   SHIRTS
                 </Link>
                 <Link
+                  style={
+                    isPant == true && isMouseIn == false
+                      ? { color: "#9CB97B", fontWeight: 700 }
+                      : isPant == true && isMouseIn == true
+                      ? {
+                          color: "#9CB97B",
+                          fontWeight: 700,
+                          backgroundColor: "white",
+                        }
+                      : {}
+                  }
+                  onMouseEnter={() => setIsMouseIn(true)}
+                  onMouseLeave={() => setIsMouseIn(false)}
                   href="/pants"
-                  className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
+                  className="m-2 text-black hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-normal text-xl"
                 >
                   PANTS
                 </Link>
@@ -100,13 +163,11 @@ const Navbar = () => {
               type="button"
               className="relative rounded-full bg-white-800 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-greenapp"
             >
-
               <Link href="/carts">
                 <span className="absolute -inset-1.5"></span>
                 <span className="sr-only">View notifications</span>
                 <img className="h-7" src="/cart.png"></img>
               </Link>
-
             </button>
             <div className="relative ml-3">
               <div>
@@ -117,9 +178,11 @@ const Navbar = () => {
                   aria-expanded="false"
                   aria-haspopup="true"
                 >
-                  <span className="absolute -inset-1.5"></span>
-                  <span className="sr-only">Open user menu</span>
-                  <img className="h-7" src="/user.png" alt="user-menu"/>
+                  <a href="/profile">
+                    <span className="absolute -inset-1.5"></span>
+                    <span className="sr-only">Open user menu</span>
+                    <img className="h-7" src="/user.png" alt="user-menu" />
+                  </a>
                 </button>
               </div>
             </div>
@@ -135,21 +198,60 @@ const Navbar = () => {
       >
         <div className="space-y-1 px-2 pb-3 pt-2 w-full">
           <Link
+            style={
+              isHome == true && isMouseIn == false
+                ? { color: "#9CB97B", fontWeight: 700 }
+                : isHome == true && isMouseIn == true
+                ? {
+                    color: "#9CB97B",
+                    fontWeight: 700,
+                    backgroundColor: "white",
+                  }
+                : {}
+            }
+            onMouseEnter={() => setIsMouseIn(true)}
+            onMouseLeave={() => setIsMouseIn(false)}
             href="/home"
-            className="block w-full text-greenapp rounded-md px-3 py-2 font-bold text-xl"
+            className="block w-full text-black hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-normal text-xl"
             aria-current="page"
           >
             HOME
           </Link>
           <Link
+            style={
+              isShirt == true && isMouseIn == false
+                ? { color: "#9CB97B", fontWeight: 700 }
+                : isShirt == true && isMouseIn == true
+                ? {
+                    color: "#9CB97B",
+                    fontWeight: 700,
+                    backgroundColor: "white",
+                  }
+                : {}
+            }
+            onMouseEnter={() => setIsMouseIn(true)}
+            onMouseLeave={() => setIsMouseIn(false)}
             href="/shirts"
-            className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
+            className="block w-full text-black hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-normal text-xl"
           >
             SHIRTS
           </Link>
           <Link
+            style={
+              isPant == true && isMouseIn == false
+                ? { color: "#9CB97B", fontWeight: 700 }
+                : isPant == true && isMouseIn == true
+                ? {
+                    color: "#9CB97B",
+                    fontWeight: 700,
+                    backgroundColor: "white",
+                  }
+                : {}
+            }
+            onMouseEnter={() => setIsMouseIn(true)}
+            onMouseLeave={() => setIsMouseIn(false)}
             href="/pants"
-            className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
+            className="block w-full text-black hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-normal text-xl"
           >
             PANTS
           </Link>
