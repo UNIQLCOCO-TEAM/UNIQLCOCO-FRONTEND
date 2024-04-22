@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from 'next/image'
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -73,24 +74,24 @@ const Navbar = () => {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex mr-0">
-                <a
+                <Link
                   href="/home"
                   className="m-2 text-black rounded-md px-3 py-2 font-bold text-xl"
                 >
                   HOME
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/shirts"
                   className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
                 >
                   SHIRTS
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/pants"
                   className="m-2 text-black-300 hover:bg-green1 hover:text-white rounded-md px-3 py-2 font-medium text-xl"
                 >
                   PANTS
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -100,11 +101,11 @@ const Navbar = () => {
               className="relative rounded-full bg-white-800 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-greenapp"
             >
 
-              <a href="/carts">
+              <Link href="/carts">
                 <span className="absolute -inset-1.5"></span>
                 <span className="sr-only">View notifications</span>
                 <img className="h-7" src="/cart.png"></img>
-              </a>
+              </Link>
 
             </button>
             <div className="relative ml-3">
@@ -133,25 +134,25 @@ const Navbar = () => {
         id="mobile-menu"
       >
         <div className="space-y-1 px-2 pb-3 pt-2 w-full">
-          <a
+          <Link
             href="/home"
             className="block w-full text-greenapp rounded-md px-3 py-2 font-bold text-xl"
             aria-current="page"
           >
             HOME
-          </a>
-          <a
+          </Link>
+          <Link
             href="/shirts"
             className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
           >
             SHIRTS
-          </a>
-          <a
+          </Link>
+          <Link
             href="/pants"
             className="block w-full text-black-300 hover:bg-greenapp hover:text-white rounded-md px-3 py-2 font-medium text-xl"
           >
             PANTS
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
