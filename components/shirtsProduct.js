@@ -4,11 +4,9 @@ import Image from "next/image";
 const ShirtsList = () => {
   const [shirtProducts, setShirtProducts] = useState({});
 
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
-
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleShirtProducts = async (id, access_token) => {
-    const API_URL = `http://10.4.13.87:8081/product/type/${id}`;
+    const API_URL = `http://10.4.13.119:8081/product/type/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -63,7 +61,7 @@ const ShirtsList = () => {
 
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.87:8081${src}`;
+    return `http://10.4.13.119:8081${src}`;
   };
 
   return (

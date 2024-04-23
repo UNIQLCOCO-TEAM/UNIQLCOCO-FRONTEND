@@ -4,18 +4,20 @@ import Footer from "../../../components/footer";
 
 export default function Profile() {
   // Dummy order data
-  const orders = [
-    {
-      id: "0000001",
-      date: "20/04/2024",
-      price: 400,
-    },
-    {
-      id: "0000002",
-      date: "21/04/2024",
-      price: 600,
-    },
-  ];
+  // const orders = [
+  //   {
+  //     id: "0000001",
+  //     date: "20/04/2024",
+  //     price: 400,
+  //   },
+  //   {
+  //     id: "0000002",
+  //     date: "21/04/2024",
+  //     price: 600,
+  //   },
+  // ];
+
+  const [orders, setOrders] = useState([]);
 
   const [userProfile, setUserProfile] = useState({
     name: "",
@@ -24,12 +26,11 @@ export default function Profile() {
     phone_number: "",
   });
 
-  const uid = 1;
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3NzM1MTQsImV4cCI6MTcxMzc4NDMxNH0.i6nPiqZyczLdc0-0ncSag0pXuDw44DXltww45vdE7OI";
-
+  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  // const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://10.4.13.87:8080/user/id/${id}`;
+    const API_URL = `http://10.4.13.119:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -49,13 +50,63 @@ export default function Profile() {
     }
   };
 
+  const handleOrderList = async (uid, access_token) => {
+    const API_URL = `http://10.4.13.119:8082/order/uid/${uid}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const formatOrderId = (orderID) => {
+    let orderIdString = orderID.toString();
+    const zerosNeeded = 6 - orderIdString.length;
+    const paddedOrderId = "0".repeat(zerosNeeded) + orderIdString;
+
+    return paddedOrderId;
+  };
+
+  const convertTimeStamp = (timestamp) => {
+    const time = new Date(timestamp);
+    const date = time.getDate() < 10 ? `0${time.getDate()}` : time.getDate();
+    const month = time.getMonth() < 10 ? `0${time.getMonth()}` : time.getMonth();
+    const year = time.getFullYear();
+    return `${date}/${month}/${year}`;
+  }
+
+  const convertPhoneNumberFormat = (phone) => {
+    const firstDigit = `${phone}`.slice(0, 3);
+    const twoDigit = `${phone}`.slice(3, 6);
+    const threeDigit = `${phone}`.slice(6);
+    return `${firstDigit}-${twoDigit}-${threeDigit}`;
+  }
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       const result = await handleUserProfile(uid, access_token);
       const fetchUserData = JSON.parse(result).result;
       setUserProfile(fetchUserData);
     };
+    const fetchOrderList = async () => {
+      const result = await handleOrderList(uid, access_token);
+      const fetchOrderListData = JSON.parse(result);
+      setOrders(fetchOrderListData.result);
+    };
     fetchUserProfile();
+    fetchOrderList();
   }, [access_token, uid]);
 
   return (
@@ -84,7 +135,7 @@ export default function Profile() {
           </div>
           <div>
             <h3 className="text-l font-semibold text-gray-800 mb-12">
-              เบอร์ติดต่อ: {userProfile.phone_number}
+              เบอร์ติดต่อ: {convertPhoneNumberFormat(userProfile.phone_number)}
             </h3>
           </div>
         </div>
@@ -112,17 +163,17 @@ export default function Profile() {
           <tbody>
             {orders.map((order) => (
               <tr
-                key={order.id}
+                key={formatOrderId(parseInt(order.order_id))}
                 className="bg-white  text-l md:text-l lg:text-xl xl:text-xl"
               >
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
                 >
-                  {order.id}
+                  {formatOrderId(parseInt(order.order_id))}
                 </th>
-                <td className="px-6 py-4">{order.date}</td>
-                <td className="px-6 py-4">{order.price}</td>
+                <td className="px-6 py-4">{convertTimeStamp(order.time)}</td>
+                <td className="px-6 py-4">{parseInt(order.total_price + order.fees).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
