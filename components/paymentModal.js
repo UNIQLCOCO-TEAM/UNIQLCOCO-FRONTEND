@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 const PaymentModal = ({ onClose, cartID }) => {
-  const uid = 1;
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3ODk5ODcsImV4cCI6MTcxMzgwMDc4N30.vYoqgcHtZMxe_Y98jKOWhf7LWcZ7Fs0eTT9TXy4Uofc";
-  const submitPayment = async (uid, cartID, access_token) => {
-    const API_URL = `http://192.168.1.5:8082/order`;
+  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";  const submitPayment = async (uid, cartID, access_token) => {
+    const API_URL = `http://10.4.13.119:8082/order`;
     const information = {
       uid: uid,
       cart_id: cartID,

@@ -40,15 +40,13 @@ export default function Carts() {
   };
 
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.119:8081${src}`;
   };
 
-  const uid = 1;
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3ODk5ODcsImV4cCI6MTcxMzgwMDc4N30.vYoqgcHtZMxe_Y98jKOWhf7LWcZ7Fs0eTT9TXy4Uofc";
-
+  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleCurrentCart = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
+    const API_URL = `http://10.4.13.119:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -69,7 +67,7 @@ export default function Carts() {
   };
 
   const handleUpdateCart = async (uid, productList, cartID, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/${cartID}`;
+    const API_URL = `http://10.4.13.119:8081/cart/${cartID}`;
     const information = {
       status: 0,
       products_id: productList,

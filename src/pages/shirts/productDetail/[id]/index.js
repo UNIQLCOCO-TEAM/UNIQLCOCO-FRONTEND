@@ -21,12 +21,10 @@ export default function ProductDetail() {
   const [isSizeXL, setIsSizeXL] = useState(false);
   const [isSizeXXL, setIsSizeXXL] = useState(false);
 
-  const uid = 1;
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3ODk5ODcsImV4cCI6MTcxMzgwMDc4N30.vYoqgcHtZMxe_Y98jKOWhf7LWcZ7Fs0eTT9TXy4Uofc";
-
+  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleUserHasCart = async (uid, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/uid/${uid}`;
+    const API_URL = `http://10.4.13.119:8081/cart/uid/${uid}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -47,7 +45,7 @@ export default function ProductDetail() {
   };
 
   const handleShirtProduct = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/product/${id}`;
+    const API_URL = `http://10.4.13.119:8081/product/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -68,7 +66,7 @@ export default function ProductDetail() {
   };
 
   const handleUpdateCart = async (uid, productList, cartID, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart/${cartID}`;
+    const API_URL = `http://10.4.13.119:8081/cart/${cartID}`;
     const information = {
       status: 0,
       products_id: productList,
@@ -95,7 +93,7 @@ export default function ProductDetail() {
   };
 
   const handleCreateCart = async (uid, productID, access_token) => {
-    const API_URL = `http://192.168.1.5:8081/cart`;
+    const API_URL = `http://10.4.13.119:8081/cart`;
     const information = {
       status: 0,
       products_id: [productID],
@@ -125,7 +123,7 @@ export default function ProductDetail() {
     const audioCtx = new AudioContext();
     let buffer = null;
     const handleAudioProduct = async () => {
-      const API_URL = `http://192.168.1.5:8081${product.sound}`;
+      const API_URL = `http://10.4.13.119:8081${product.sound}`;
       try {
         const result = await fetch(API_URL, {
           method: "GET",
@@ -249,7 +247,7 @@ export default function ProductDetail() {
   };
 
   const imageLoader = ({ src }) => {
-    return `http://192.168.1.5:8081${src}`;
+    return `http://10.4.13.119:8081${src}`;
   };
 
   return (

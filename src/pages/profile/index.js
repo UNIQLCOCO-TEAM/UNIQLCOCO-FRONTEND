@@ -26,12 +26,11 @@ export default function Profile() {
     phone_number: "",
   });
 
-  const uid = 1;
-  const access_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldkBsb2NhbC5jb20iLCJpYXQiOjE3MTM3ODk5ODcsImV4cCI6MTcxMzgwMDc4N30.vYoqgcHtZMxe_Y98jKOWhf7LWcZ7Fs0eTT9TXy4Uofc";
-
+  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  // const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+    const API_URL = `http://10.4.13.119:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -52,7 +51,7 @@ export default function Profile() {
   };
 
   const handleOrderList = async (uid, access_token) => {
-    const API_URL = `http://192.168.1.5:8082/order/uid/${uid}`;
+    const API_URL = `http://10.4.13.119:8082/order/uid/${uid}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -174,7 +173,7 @@ export default function Profile() {
                   {formatOrderId(parseInt(order.order_id))}
                 </th>
                 <td className="px-6 py-4">{convertTimeStamp(order.time)}</td>
-                <td className="px-6 py-4">{order.total_price + order.fees}</td>
+                <td className="px-6 py-4">{parseInt(order.total_price + order.fees).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

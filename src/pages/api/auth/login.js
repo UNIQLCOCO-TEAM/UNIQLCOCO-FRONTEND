@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const userData = req.body
   try {
     /* Fetch External API */
-    const UNIQLCOCO_API = ""
+    const UNIQLCOCO_API = `http://10.4.13.119:8080/auth/login`
     const result = await fetch(
         UNIQLCOCO_API,
         {
@@ -18,14 +18,15 @@ export default async function handler(req, res) {
     if (result.ok) {
         /* Generating cookie */
         const body = await result.json()
-        const { expiresIn, accessToken } = body
-        const cookie = serialize('access_token', accessToken, {
-          httpOnly: true,
-          maxAge: expiresIn,
-          path: '/',
-        })
-        res.setHeader('Set-Cookie', cookie)
-        res.status(200).json({ message: 'Successfully set cookie!' })
+        console.log(body);
+        // const { expiresIn, accessToken } = body
+        // const cookie = serialize('access_token', accessToken, {
+        //   httpOnly: true,
+        //   maxAge: expiresIn,
+        //   path: '/',
+        // })
+        // res.setHeader('Set-Cookie', cookie)
+        // res.status(200).json({ message: 'Successfully set cookie!' })
     }
 } catch (err) {
     console.error(err)
