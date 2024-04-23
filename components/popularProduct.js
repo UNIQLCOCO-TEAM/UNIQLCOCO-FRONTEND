@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.119:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   const productType = product.type == 1 ? "shirts" : "pants";
@@ -49,7 +49,7 @@ const ProductList = () => {
 
   const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleProductList = async (access_token) => {
-    const API_URL = `http://10.4.13.119:8082/order/popular`;
+    const API_URL = `http://192.168.1.5:8082/order/popular`;
     try {
       const result = await fetch(API_URL, {
         method: "POST",

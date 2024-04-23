@@ -2,8 +2,10 @@ import Navbar from "../../../components/navbar";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Footer from "../../../components/footer";
+import { useRouter } from "next/router";
 
 export default function Carts() {
+  const router = useRouter();
   const [carts, setCarts] = useState([]);
   const [fees, setFees] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -40,13 +42,14 @@ export default function Carts() {
   };
 
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.119:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
   const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  if (uid == null) router.push('/login');
   const handleCurrentCart = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart/uid/${id}`;
+    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -67,7 +70,7 @@ export default function Carts() {
   };
 
   const handleUpdateCart = async (uid, productList, cartID, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart/${cartID}`;
+    const API_URL = `http://192.168.1.5:8081/cart/${cartID}`;
     const information = {
       status: 0,
       products_id: productList,
@@ -105,8 +108,8 @@ export default function Carts() {
         setIsDisable(false);
       }
     };
-    fetchCurrentCart();
-  }, [access_token, uid]);
+    if (uid != null) fetchCurrentCart();
+  }, [access_token, uid, router]);
 
   return (
     <div className="font-sukhumvit bg-white h-full">

@@ -21,10 +21,11 @@ export default function ProductDetail() {
   const [isSizeXL, setIsSizeXL] = useState(false);
   const [isSizeXXL, setIsSizeXXL] = useState(false);
 
-  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
-  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
+  const access_token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
   const handleUserHasCart = async (uid, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart/uid/${uid}`;
+    const API_URL = `http://192.168.1.5:8081/cart/uid/${uid}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -45,7 +46,7 @@ export default function ProductDetail() {
   };
 
   const handleShirtProduct = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/product/${id}`;
+    const API_URL = `http://192.168.1.5:8081/product/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -66,7 +67,7 @@ export default function ProductDetail() {
   };
 
   const handleUpdateCart = async (uid, productList, cartID, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart/${cartID}`;
+    const API_URL = `http://192.168.1.5:8081/cart/${cartID}`;
     const information = {
       status: 0,
       products_id: productList,
@@ -93,7 +94,7 @@ export default function ProductDetail() {
   };
 
   const handleCreateCart = async (uid, productID, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart`;
+    const API_URL = `http://192.168.1.5:8081/cart`;
     const information = {
       status: 0,
       products_id: [productID],
@@ -123,7 +124,7 @@ export default function ProductDetail() {
     const audioCtx = new AudioContext();
     let buffer = null;
     const handleAudioProduct = async () => {
-      const API_URL = `http://10.4.13.119:8081${product.sound}`;
+      const API_URL = `http://192.168.1.5:8081${product.sound}`;
       try {
         const result = await fetch(API_URL, {
           method: "GET",
@@ -158,11 +159,10 @@ export default function ProductDetail() {
   };
 
   const handleAddProductToCart = async () => {
-    console.log({ selectProductSize, hasCart, cartID });
     const shirtProduct = Array.from(shirtsProduct).filter(
       (product) => product.size == selectProductSize
     )[0];
-    if (!hasCart) {
+    if (!hasCart && uid != null) {
       const result = await handleCreateCart(uid, shirtProduct.id, access_token);
       console.log(JSON.parse(result));
       router.replace("/carts");
@@ -247,7 +247,7 @@ export default function ProductDetail() {
   };
 
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.119:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   return (
@@ -371,7 +371,10 @@ export default function ProductDetail() {
                 <div className="w-full  px-2 mb-2 sm:mb-0">
                   <button
                     className="w-full bg-green1 text-white py-3 px-4 rounded-full font-bold hover:bg-grey1 text-xl"
-                    onClick={handleAddProductToCart}
+                    onClick={() => {
+                      if (uid == null) router.push('/login')
+                      else handleAddProductToCart()
+                    }}
                   >
                     Add to Cart
                   </button>

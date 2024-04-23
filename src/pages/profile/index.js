@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
+import { useRouter } from "next/router";
 
 export default function Profile() {
-  // Dummy order data
-  // const orders = [
-  //   {
-  //     id: "0000001",
-  //     date: "20/04/2024",
-  //     price: 400,
-  //   },
-  //   {
-  //     id: "0000002",
-  //     date: "21/04/2024",
-  //     price: 600,
-  //   },
-  // ];
-
+  const router = useRouter();
   const [orders, setOrders] = useState([]);
 
   const [userProfile, setUserProfile] = useState({
@@ -26,11 +14,12 @@ export default function Profile() {
     phone_number: "",
   });
 
-  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
-  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
-  // const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
+  const access_token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
+  if (uid == null) router.push("/login");
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8080/user/id/${id}`;
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -51,7 +40,7 @@ export default function Profile() {
   };
 
   const handleOrderList = async (uid, access_token) => {
-    const API_URL = `http://10.4.13.119:8082/order/uid/${uid}`;
+    const API_URL = `http://192.168.1.5:8082/order/uid/${uid}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -82,17 +71,18 @@ export default function Profile() {
   const convertTimeStamp = (timestamp) => {
     const time = new Date(timestamp);
     const date = time.getDate() < 10 ? `0${time.getDate()}` : time.getDate();
-    const month = time.getMonth() < 10 ? `0${time.getMonth()}` : time.getMonth();
+    const month =
+      time.getMonth() < 10 ? `0${time.getMonth()}` : time.getMonth();
     const year = time.getFullYear();
     return `${date}/${month}/${year}`;
-  }
+  };
 
   const convertPhoneNumberFormat = (phone) => {
     const firstDigit = `${phone}`.slice(0, 3);
     const twoDigit = `${phone}`.slice(3, 6);
     const threeDigit = `${phone}`.slice(6);
     return `${firstDigit}-${twoDigit}-${threeDigit}`;
-  }
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -105,8 +95,10 @@ export default function Profile() {
       const fetchOrderListData = JSON.parse(result);
       setOrders(fetchOrderListData.result);
     };
-    fetchUserProfile();
-    fetchOrderList();
+    if (uid != null) {
+      fetchUserProfile();
+      fetchOrderList();
+    }
   }, [access_token, uid]);
 
   return (
@@ -173,7 +165,9 @@ export default function Profile() {
                   {formatOrderId(parseInt(order.order_id))}
                 </th>
                 <td className="px-6 py-4">{convertTimeStamp(order.time)}</td>
-                <td className="px-6 py-4">{parseInt(order.total_price + order.fees).toLocaleString()}</td>
+                <td className="px-6 py-4">
+                  {parseInt(order.total_price + order.fees).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>

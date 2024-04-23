@@ -2,7 +2,7 @@ import React, { useState } from "react";
 const PaymentModal = ({ onClose, cartID }) => {
   const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
   const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";  const submitPayment = async (uid, cartID, access_token) => {
-    const API_URL = `http://10.4.13.119:8082/order`;
+    const API_URL = `http://192.168.1.5:8082/order`;
     const information = {
       uid: uid,
       cart_id: cartID,

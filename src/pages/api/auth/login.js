@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const userData = req.body
   try {
     /* Fetch External API */
-    const UNIQLCOCO_API = `http://10.4.13.119:8080/auth/login`
+    const UNIQLCOCO_API = `http://192.168.1.5:8080/auth/login`
     const result = await fetch(
         UNIQLCOCO_API,
         {

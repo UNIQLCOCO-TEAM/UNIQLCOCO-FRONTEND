@@ -43,13 +43,13 @@ export default function Payment() {
   ];
 
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.119:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   const id = 1;
   const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleUserHasCart = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/cart/uid/${id}`;
+    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -70,7 +70,7 @@ export default function Payment() {
   };
 
   const handleUserProfile = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8080/user/id/${id}`;
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -91,7 +91,7 @@ export default function Payment() {
   };
 
   const submitPayment = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8080/user/id/${id}`;
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",

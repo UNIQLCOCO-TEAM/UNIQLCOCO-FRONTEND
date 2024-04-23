@@ -28,7 +28,7 @@ const Register = () => {
   };
 
   const handleCreateUserInformation = async () => {
-    const API_URL = `http://10.4.13.119:8080/user/profile/create`;
+    const API_URL = `http://192.168.1.5:8080/user/profile/create`;
     const information = {
       name: account.firstname,
       surname: account.lastname,
@@ -56,7 +56,7 @@ const Register = () => {
   };
 
   const handleCreateAccount = async (uid) => {
-    const API_URL = `http://10.4.13.119:8080/auth/sign-up`;
+    const API_URL = `http://192.168.1.5:8080/auth/sign-up`;
     const information = {
       email: user.email,
       password: user.password,

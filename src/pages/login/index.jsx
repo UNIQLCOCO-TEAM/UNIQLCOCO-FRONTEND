@@ -12,7 +12,7 @@ const Login = () => {
   });
 
   const handleSignInFlow = async () => {
-    const API_URL = `http://10.4.13.119:8080/auth/login`;
+    const API_URL = `http://192.168.1.5:8080/auth/login`;
     const information = {
       email: user.email,
       password: user.password,
@@ -44,7 +44,8 @@ const Login = () => {
         if (account.status == 201) {
           localStorage.setItem("uid", account.result.uid);
           localStorage.setItem("access_token", account.result.access_token);
-          router.push('/home')
+          localStorage.setItem("role", account.result.role);
+          router.push("/home");
         }
       } catch (err) {
         console.error(err);

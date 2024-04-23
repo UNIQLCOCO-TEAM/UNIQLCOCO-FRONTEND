@@ -6,7 +6,7 @@ const ShirtsList = () => {
 
   const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
   const handleShirtProducts = async (id, access_token) => {
-    const API_URL = `http://10.4.13.119:8081/product/type/${id}`;
+    const API_URL = `http://192.168.1.5:8081/product/type/${id}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
@@ -61,7 +61,7 @@ const ShirtsList = () => {
 
 const ProductCard = ({ product }) => {
   const imageLoader = ({ src }) => {
-    return `http://10.4.13.119:8081${src}`;
+    return `http://192.168.1.5:8081${src}`;
   };
 
   return (
