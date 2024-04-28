@@ -1,38 +1,136 @@
 import PaymentModal from "../../../components/paymentModal";
 import Navbar from "../../../components/navbar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Footer from "../../../components/footer";
 
 export default function Payment() {
-
+  const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [order, setOrder] = useState([]);
+  const [fees, setFees] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cartID, setCartID] = useState(0);
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    surname: "",
+    address: "",
+    phone_number: "",
+  });
 
   const handlePayment = () => {
     setIsModalOpen(true);
   };
 
-  const products = [
-    {
-      id: 1,
-      name: "เสื้อคอกลมผู้ชายผ้าถัก",
-      image: "/shirt.jpeg",
-      color: "สีฟ้าท๊อปดราย",
-      size: "M",
-      price: 220,
-    },
-    {
-      id: 2,
-      name: "เสื้อคอกลมผู้ชายผ้าถัก",
-      image: "/shirt.jpeg",
-      color: "สีฟ้าท๊อปดราย",
-      size: "M",
-      price: 220,
-    },
-    // เพิ่มสินค้าเพิ่มเติมตามต้องการ
-  
-  ];
+  const imageLoader = ({ src }) => {
+    return `http://192.168.1.5:8081${src}`;
+  };
+
+  const access_token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
+  const handleUserHasCart = async (id, access_token) => {
+    const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handleUserProfile = async (id, access_token) => {
+    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const convertPhoneNumberFormat = (phone) => {
+    const firstDigit = `${phone}`.slice(0, 3);
+    const twoDigit = `${phone}`.slice(3, 6);
+    const threeDigit = `${phone}`.slice(6);
+    return `${firstDigit}-${twoDigit}-${threeDigit}`;
+  };
+
+  const handleTokenExpired = async (access_token) => {
+    const API_URL = `http://192.168.1.5:8080/auth/isExpired/${access_token}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    const checkTokenIsExpired = async () => {
+      const result = await handleTokenExpired(access_token);
+      if (JSON.parse(result).result === true) {
+        router.push("login");
+        localStorage.clear();
+      }
+    };
+    const fetchCurrentOrder = async () => {
+      const result = await handleUserHasCart(uid, access_token);
+      const currentOrderData = JSON.parse(result).result;
+      console.log(currentOrderData);
+      if (currentOrderData != null) {
+        setCartID(currentOrderData.id);
+        setFees(currentOrderData.fees);
+        setTotalPrice(currentOrderData.total_price);
+        setOrder(currentOrderData.carts);
+      }
+    };
+    const fetchUserProfile = async () => {
+      const result = await handleUserProfile(uid, access_token);
+      const fetchUserData = JSON.parse(result).result;
+      setUserProfile(fetchUserData);
+    };
+    checkTokenIsExpired();
+    fetchCurrentOrder();
+    fetchUserProfile();
+  }, [access_token, uid]);
+
   return (
     <div className="font-sukhumvit bg-white h-full">
-      {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <PaymentModal onClose={() => setIsModalOpen(false)} cartID={cartID} />
+      )}
       <Navbar />
       <div className="bg-white">
         <div className="text-greenapp px-10 md:px-10 lg:px-15 xl:px-32 py-5 md:py-5 lg:py-10 xl:py-15 font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
@@ -49,41 +147,44 @@ export default function Payment() {
           </div>
           <div class="flex items-center justify-between w-full">
             <p class="font-sukhumvit font-semibold text-l md:text-l lg:text-xl xl:text-xl leading-9 text-gray-900 mt-2 md:mt-2 lg:mt-3 xl:mt-4">
-              วิศวะ ซอฟต์แวร์
+              {userProfile.name} {userProfile.surname}
             </p>
           </div>
 
           <div class="flex items-center justify-between w-full">
             <p class="font-sukhumvit font-semibold text-lg md:text-lg lg:text-l xl:text-l leading-9 text-gray-900 mt-1 md:mt-2 lg:mt-3 xl:mt-4">
-              99 ถ. พหลโยธิน ตำบล คลองหนึ่ง อำเภอคลองหลวง ปทุมธานี 12120
+              {userProfile.address}
             </p>
           </div>
 
           <div class="flex items-center justify-between w-full">
             <p class="font-sukhumvit font-semibold text-lg md:text-lg lg:text-l xl:text-l leading-9 text-gray-900 mt-1 md:mt-2 lg:mt-3 xl:mt-4">
-              เบอร์ติดต่อ : 012 345 6789
+              เบอร์ติดต่อ : {convertPhoneNumberFormat(userProfile.phone_number)}
             </p>
           </div>
         </div>
       </div>
 
       <div className="w-full bg-white  max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-        {products.map((product) => (
+        {order?.map((product) => (
           <div
             key={product.id}
             className="rounded-2xl bg-greenbg p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4"
           >
             <div className="col-span-12 lg:col-span-2 img box">
-              <img
-                src={product.image}
-                alt={product.name}
+              <Image
+                loader={imageLoader}
+                src={product.image_file}
+                alt={product.title}
+                width={30}
+                height={30}
                 className="max-lg:w-full lg:w-[180px] "
               />
             </div>
             <div className="col-span-12 lg:col-span-10 detail lg:pl-3">
               <div className="flex items-center justify-start mb-2">
                 <h5 className="font-bold text-xl md:text-xl lg:text-xxl xl:text-xxl text-gray-900 mr-auto">
-                  {product.name}
+                  {product.title}
                 </h5>
               </div>
               <div className="font-semi-bold text-l leading-7 text-gray-500 mb-6">
@@ -94,7 +195,7 @@ export default function Payment() {
               </div>
               <div className="flex justify-between items-center">
                 <h6 className="text-black font-bold text-2xl leading-9 text-right">
-                  {product.price} บาท
+                  {parseInt(product.price).toLocaleString()} บาท
                 </h6>
               </div>
             </div>
@@ -111,7 +212,9 @@ export default function Payment() {
             <p class="font-normal text-l leading-8 text-grey1">
               Standard Delivery - ส่งธรรมดาในประเทศ
             </p>
-            <h6 class="font-semibold text-l leading-8 text-gray-900">0 บาท</h6>
+            <h6 class="font-semibold text-l leading-8 text-gray-900">
+              {fees} บาท
+            </h6>
           </div>
         </div>
 
@@ -134,21 +237,17 @@ export default function Payment() {
           <div class="flex items-center justify-between w-full mb-6 text-l md:text-l lg:text-xl xl:text-xl">
             <p class="font-normal leading-8 text-gray-400">รวม</p>
             <h6 class="font-semibold leading-8 text-gray-900">
-              400 บาท
+              {parseInt(totalPrice).toLocaleString()} บาท
             </h6>
           </div>
           <div class="flex items-center justify-between w-full pb-6 border-b-2 border-greenapp text-l md:text-l lg:text-xl xl:text-xl">
-            <p class="font-normal leading-8 text-gray-400">
-              การจัดส่งสินค้า
-            </p>
-            <h6 class="font-semibold leading-8 text-gray-900">0 บาท</h6>
+            <p class="font-normal leading-8 text-gray-400">ค่าจัดส่งสินค้า</p>
+            <h6 class="font-semibold leading-8 text-gray-900">{fees} บาท</h6>
           </div>
           <div class="flex items-center justify-between w-full py-3 text-xl md:text-xl lg:text-xxl xl:text-xxl">
-            <p class="font-semibold leading-9 text-gray-900">
-              ยอดชำระทั้งหมด
-            </p>
+            <p class="font-semibold leading-9 text-gray-900">ยอดชำระทั้งหมด</p>
             <h6 class="font-semibold  leading-9 text-greenapp">
-              400 บาท
+              {parseInt(totalPrice + fees).toLocaleString()} บาท
             </h6>
           </div>
         </div>
@@ -160,6 +259,9 @@ export default function Payment() {
             ชำระเงิน
           </a>
         </div>
+      </div>
+      <div className="bottom-0 w-full mt-2">
+        <Footer />
       </div>
     </div>
   );
