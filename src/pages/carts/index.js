@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Footer from "../../../components/footer";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Carts() {
   const router = useRouter();
@@ -45,9 +46,10 @@ export default function Carts() {
     return `http://192.168.1.5:8081${src}`;
   };
 
-  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
-  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
-  if (uid == null) router.push('/login');
+  const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
+  const access_token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
+  if (uid == null) router.push("/login");
   const handleCurrentCart = async (id, access_token) => {
     const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
     try {
@@ -96,7 +98,34 @@ export default function Carts() {
     }
   };
 
+  const handleTokenExpired = async (access_token) => {
+    const API_URL = `http://192.168.1.5:8080/auth/isExpired/${access_token}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
   useEffect(() => {
+    const checkTokenIsExpired = async () => {
+      const result = await handleTokenExpired(access_token);
+      if (JSON.parse(result).result === true) {
+        router.push("login");
+        localStorage.clear();
+      }
+    };
     const fetchCurrentCart = async () => {
       const result = await handleCurrentCart(uid, access_token);
       const currentCartData = JSON.parse(result).result;
@@ -108,6 +137,7 @@ export default function Carts() {
         setIsDisable(false);
       }
     };
+    checkTokenIsExpired();
     if (uid != null) fetchCurrentCart();
   }, [access_token, uid, router]);
 
@@ -185,7 +215,7 @@ export default function Carts() {
                   <div className="flex justify-between items-center">
                     {/* Your quantity buttons and input here */}
                     <h6 className="text-black font-bold text-2xl leading-9 text-right">
-                      {product.price} บาท
+                      {parseInt(product.price).toLocaleString()} บาท
                     </h6>
                   </div>
                 </div>
@@ -203,7 +233,7 @@ export default function Carts() {
               </div>
               <div className="flex items-center justify-between w-full pb-6 border-b-2 border-greenapp ">
                 <p className="font-normal text-xl leading-8 text-gray-400">
-                  การจัดส่งสินค้า
+                  ค่าจัดส่งสินค้า
                 </p>
                 <h6 className="font-semibold text-xl leading-8 text-gray-900">
                   {fees} บาท
@@ -220,15 +250,15 @@ export default function Carts() {
             </div>
           </div>
           <div className="bg-white flex items-center flex-col sm:flex-row justify-center gap-3  py-10">
-            <a
+            <Link
               href="/home"
               className="rounded-full py-4 w-full max-w-[280px]  flex items-center bg-indigo-50 justify-center transition-all duration-500  hover:bg-grey1"
             >
               <span className="px-2 font-semibold text-xl leading-8 text-black">
                 Back to Shopping
               </span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="/payment"
               style={
                 isDisable
@@ -238,7 +268,7 @@ export default function Carts() {
               className="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-greenapp font-semibold text-xl text-white flex transition-all duration-500 hover:bg-green1 "
             >
               ชำระเงิน
-            </a>
+            </Link>
           </div>
         </div>
         <div className="bottom-0 w-full">

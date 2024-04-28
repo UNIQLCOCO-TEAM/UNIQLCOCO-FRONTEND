@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Profile() {
   const router = useRouter();
@@ -18,6 +19,27 @@ export default function Profile() {
   const access_token =
     typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
   if (uid == null) router.push("/login");
+
+  const handleTokenExpired = async (access_token) => {
+    const API_URL = `http://192.168.1.5:8080/auth/isExpired/${access_token}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const handleUserProfile = async (id, access_token) => {
     const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
     try {
@@ -85,6 +107,13 @@ export default function Profile() {
   };
 
   useEffect(() => {
+    const checkTokenIsExpired = async () => {
+      const result = await handleTokenExpired(access_token);
+      if (JSON.parse(result).result === true) {
+        router.push("login");
+        localStorage.clear();
+      }
+    };
     const fetchUserProfile = async () => {
       const result = await handleUserProfile(uid, access_token);
       const fetchUserData = JSON.parse(result).result;
@@ -95,11 +124,12 @@ export default function Profile() {
       const fetchOrderListData = JSON.parse(result);
       setOrders(fetchOrderListData.result);
     };
+    checkTokenIsExpired();
     if (uid != null) {
       fetchUserProfile();
       fetchOrderList();
     }
-  }, [access_token, uid]);
+  }, [access_token, router, uid]);
 
   return (
     <div className="font-sukhumvit bg-white h-screen">
@@ -112,7 +142,13 @@ export default function Profile() {
 
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto my-2 flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
-          <img src="/profile.png" className="w-32" alt="Profile"></img>
+          <Image
+            src="/profile.png"
+            className="w-32"
+            alt="Profile"
+            width={48}
+            height={48}
+          ></Image>
         </div>
         <div className="max-w-xl mx-auto p-5 text-center">
           <div className="mb-4">

@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
               {product.title}
             </h2>
             <p className="text-black items-center font-semibold text-base md:text-base lg:text-xl xl:text-xl">
-              {product.price} บาท
+              {parseInt(product.price).toLocaleString()} บาท
             </p>
           </div>
           <div className="flex justify-between items-start mb-5">

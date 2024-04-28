@@ -17,20 +17,24 @@ export default function Home() {
       </div>
       <div className="">
         <div className="relative">
-          <img
+          <Image
             src="/Home.png"
             className="h-auto w-full"
             alt="Background Image"
+            width={1440}
+            height={900}
           />
 
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl md:text-xxl lg:text-xxxl xl:text-5xl font-bold text-white mt-6 md:mt-24 lg:mt-32 xl:mt-32">
             WELCOME TO
           </div>
 
-          <img
+          <Image
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-16 md:h-24 lg:h-24 xl:h-40 w-auto mt-0 md:mt-4 lg:mt-15 xl:mt-15"
             src="/LOGO1.png"
             alt="logo01"
+            width={48}
+            height={48}
           />
 
           <button

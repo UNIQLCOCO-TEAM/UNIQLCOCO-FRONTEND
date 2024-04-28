@@ -24,6 +24,27 @@ export default function ProductDetail() {
   const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
   const access_token =
     typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
+
+  const handleTokenExpired = async (access_token) => {
+    const API_URL = `http://192.168.1.5:8080/auth/isExpired/${access_token}`;
+    try {
+      const result = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.body}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const handleUserHasCart = async (uid, access_token) => {
     const API_URL = `http://192.168.1.5:8081/cart/uid/${uid}`;
     try {
@@ -180,6 +201,13 @@ export default function ProductDetail() {
   };
 
   useEffect(() => {
+    const checkTokenIsExpired = async () => {
+      const result = await handleTokenExpired(access_token);
+      if (JSON.parse(result).result === true) {
+        router.push("login");
+        localStorage.clear();
+      }
+    };
     const fetchProduct = async () => {
       try {
         const result = await handleShirtProduct(productID, access_token);
@@ -202,9 +230,10 @@ export default function ProductDetail() {
         console.error(err);
       }
     };
+    checkTokenIsExpired();
     fetchProduct();
     fetchForCheckUseHasCart();
-  }, [productID, access_token, uid]);
+  }, [productID, access_token, uid, router]);
 
   const findProductSize = ({ size }) => {
     Array.from(shirtsProduct).forEach((shirt) => {
@@ -259,7 +288,7 @@ export default function ProductDetail() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">
             <div className="md:w-1/2 px-4 mb-4 md:mb-0">
-              <div className="h-auto rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
+              <div className="h-auto rounded-lg mb-4">
                 <Image
                   loader={imageLoader}
                   className="w-full h-full object-cover"
@@ -278,10 +307,12 @@ export default function ProductDetail() {
 
               <div className="flex flex-wrap items-center mt-5">
                 <button onClick={play} className="mr-5 flex-shrink-0">
-                  <img
+                  <Image
                     src="/volume.png"
                     alt="Speaker Icon"
                     className="w-8 h-8"
+                    width={48}
+                    height={48}
                   />
                 </button>
                 <p className="text-black text-l font-semibold flex-grow">
@@ -292,7 +323,7 @@ export default function ProductDetail() {
               <div className="flex mt-8 mb-4">
                 <div className="mr-4">
                   <span className="text-green1 font-bold text-xl md:text-2xl">
-                    {product.price} บาท
+                    {parseInt(product.price).toLocaleString()} บาท
                   </span>
                 </div>
                 <div className="ml-10">
@@ -372,8 +403,8 @@ export default function ProductDetail() {
                   <button
                     className="w-full bg-green1 text-white py-3 px-4 rounded-full font-bold hover:bg-grey1 text-xl"
                     onClick={() => {
-                      if (uid == null) router.push('/login')
-                      else handleAddProductToCart()
+                      if (uid == null) router.push("/login");
+                      else handleAddProductToCart();
                     }}
                   >
                     Add to Cart

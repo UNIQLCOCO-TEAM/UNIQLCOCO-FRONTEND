@@ -45,7 +45,7 @@ const Login = () => {
           localStorage.setItem("uid", account.result.uid);
           localStorage.setItem("access_token", account.result.access_token);
           localStorage.setItem("role", account.result.role);
-          router.push("/home");
+          account.result.role == "user" ?  router.push("/home") : router.push('/dashboard');
         }
       } catch (err) {
         console.error(err);

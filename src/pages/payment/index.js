@@ -5,7 +5,7 @@ import Image from "next/image";
 import Footer from "../../../components/footer";
 
 export default function Payment() {
-  const uid = typeof window !== 'undefined' ? localStorage.getItem("uid") : "";
+  const uid = typeof window !== "undefined" ? localStorage.getItem("uid") : "";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [order, setOrder] = useState([]);
   const [fees, setFees] = useState(0);
@@ -22,32 +22,12 @@ export default function Payment() {
     setIsModalOpen(true);
   };
 
-  const products = [
-    {
-      id: 1,
-      name: "เสื้อคอกลมผู้ชายผ้าถัก",
-      image: "/shirt.jpeg",
-      color: "สีฟ้าท๊อปดราย",
-      size: "M",
-      price: 220,
-    },
-    {
-      id: 2,
-      name: "เสื้อคอกลมผู้ชายผ้าถัก",
-      image: "/shirt.jpeg",
-      color: "สีฟ้าท๊อปดราย",
-      size: "M",
-      price: 220,
-    },
-    // เพิ่มสินค้าเพิ่มเติมตามต้องการ
-  ];
-
   const imageLoader = ({ src }) => {
     return `http://192.168.1.5:8081${src}`;
   };
 
-  const id = 1;
-  const access_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : "";
+  const access_token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : "";
   const handleUserHasCart = async (id, access_token) => {
     const API_URL = `http://192.168.1.5:8081/cart/uid/${id}`;
     try {
@@ -90,14 +70,20 @@ export default function Payment() {
     }
   };
 
-  const submitPayment = async (id, access_token) => {
-    const API_URL = `http://192.168.1.5:8080/user/id/${id}`;
+  const convertPhoneNumberFormat = (phone) => {
+    const firstDigit = `${phone}`.slice(0, 3);
+    const twoDigit = `${phone}`.slice(3, 6);
+    const threeDigit = `${phone}`.slice(6);
+    return `${firstDigit}-${twoDigit}-${threeDigit}`;
+  };
+
+  const handleTokenExpired = async (access_token) => {
+    const API_URL = `http://192.168.1.5:8080/auth/isExpired/${access_token}`;
     try {
       const result = await fetch(API_URL, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
         },
       });
       if (result.ok) {
@@ -111,14 +97,14 @@ export default function Payment() {
     }
   };
 
-  const convertPhoneNumberFormat = (phone) => {
-    const firstDigit = `${phone}`.slice(0, 3);
-    const twoDigit = `${phone}`.slice(3, 6);
-    const threeDigit = `${phone}`.slice(6);
-    return `${firstDigit}-${twoDigit}-${threeDigit}`;
-  }
-
   useEffect(() => {
+    const checkTokenIsExpired = async () => {
+      const result = await handleTokenExpired(access_token);
+      if (JSON.parse(result).result === true) {
+        router.push("login");
+        localStorage.clear();
+      }
+    };
     const fetchCurrentOrder = async () => {
       const result = await handleUserHasCart(uid, access_token);
       const currentOrderData = JSON.parse(result).result;
@@ -135,13 +121,16 @@ export default function Payment() {
       const fetchUserData = JSON.parse(result).result;
       setUserProfile(fetchUserData);
     };
+    checkTokenIsExpired();
     fetchCurrentOrder();
     fetchUserProfile();
-  }, [access_token, id, uid]);
+  }, [access_token, uid]);
 
   return (
     <div className="font-sukhumvit bg-white h-full">
-      {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} cartID={cartID} />}
+      {isModalOpen && (
+        <PaymentModal onClose={() => setIsModalOpen(false)} cartID={cartID} />
+      )}
       <Navbar />
       <div className="bg-white">
         <div className="text-greenapp px-10 md:px-10 lg:px-15 xl:px-32 py-5 md:py-5 lg:py-10 xl:py-15 font-bold text-xxl md:text-xxl lg:text-xxxl xl:text-xxxl">
@@ -206,7 +195,7 @@ export default function Payment() {
               </div>
               <div className="flex justify-between items-center">
                 <h6 className="text-black font-bold text-2xl leading-9 text-right">
-                  {product.price} บาท
+                  {parseInt(product.price).toLocaleString()} บาท
                 </h6>
               </div>
             </div>
@@ -252,7 +241,7 @@ export default function Payment() {
             </h6>
           </div>
           <div class="flex items-center justify-between w-full pb-6 border-b-2 border-greenapp text-l md:text-l lg:text-xl xl:text-xl">
-            <p class="font-normal leading-8 text-gray-400">การจัดส่งสินค้า</p>
+            <p class="font-normal leading-8 text-gray-400">ค่าจัดส่งสินค้า</p>
             <h6 class="font-semibold leading-8 text-gray-900">{fees} บาท</h6>
           </div>
           <div class="flex items-center justify-between w-full py-3 text-xl md:text-xl lg:text-xxl xl:text-xxl">

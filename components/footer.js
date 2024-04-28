@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="relative bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-greenapp shadow md:flex md:items-center md:justify-between md:p-6 font-sukhumvit">
@@ -5,15 +7,19 @@ export default function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <div className="flex items-center">
-              <img
+              <Image
                 className="h-12 w-auto"
                 src="/LOGO2.png"
                 alt="Your Company"
+                width={48}
+                height={48}
               />
-              <img
+              <Image
                 className="h-12 w-auto ml-3"
                 src="/LOGO1.png"
                 alt="Your Company"
+                width={48}
+                height={48}
               />
             </div>
           </div>
